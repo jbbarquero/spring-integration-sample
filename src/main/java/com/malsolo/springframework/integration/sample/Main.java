@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
 /**
  * Starts the Spring Context and will initialize the Spring Integration routes.
  *
@@ -31,54 +30,56 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public final class Main {
 
-	private static final Logger LOGGER = Logger.getLogger(Main.class);
+    private static final Logger LOGGER = Logger.getLogger(Main.class);
 
-	private Main() { }
+    private Main() {
+    }
 
-	/**
-	 * Load the Spring Integration Application Context
-	 *
-	 * @param args - command line arguments
-	 */
-	public static void main(final String... args) {
+    /**
+     * Load the Spring Integration Application Context
+     *
+     * @param args
+     *            - command line arguments
+     */
+    public static void main(final String... args) {
 
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("\n========================================================="
-					  + "\n                                                         "
-					  + "\n          Welcome to Spring Integration!                 "
-					  + "\n                                                         "
-					  + "\n    For more information please visit:                   "
-					  + "\n    http://www.springsource.org/spring-integration       "
-					  + "\n                                                         "
-					  + "\n=========================================================" );
-		}
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("\n========================================================="
+                    + "\n                                                         "
+                    + "\n          Welcome to Spring Integration!                 "
+                    + "\n                                                         "
+                    + "\n    For more information please visit:                   "
+                    + "\n    http://www.springsource.org/spring-integration       "
+                    + "\n                                                         "
+                    + "\n=========================================================");
+        }
 
-		final AbstractApplicationContext context =
-				new ClassPathXmlApplicationContext("classpath:META-INF/spring/integration/*-context.xml");
+        final AbstractApplicationContext context = new ClassPathXmlApplicationContext(
+                "classpath:META-INF/spring/integration/*-context.xml");
 
-		context.registerShutdownHook();
+        context.registerShutdownHook();
 
-		SpringIntegrationUtils.displayDirectories(context);
+        SpringIntegrationUtils.displayDirectories(context);
 
-		final Scanner scanner = new Scanner(System.in);
+        try (final Scanner scanner = new Scanner(System.in)) {
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("\n========================================================="
+                        + "\n                                                         "
+                        + "\n    Please press 'q + Enter' to quit the application.    "
+                        + "\n                                                         "
+                        + "\n=========================================================");
+            }
 
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("\n========================================================="
-					  + "\n                                                         "
-					  + "\n    Please press 'q + Enter' to quit the application.    "
-					  + "\n                                                         "
-					  + "\n=========================================================" );
-		}
+            while (!scanner.hasNext("q")) {
+                // Do nothing unless user presses 'q' to quit.
+            }
+        }
 
-		while (!scanner.hasNext("q")) {
-			//Do nothing unless user presses 'q' to quit.
-		}
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Exiting application...bye.");
+        }
 
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Exiting application...bye.");
-		}
+        System.exit(0);
 
-		System.exit(0);
-
-	}
+    }
 }
